@@ -1,3 +1,5 @@
+import sys
+import json
 import requests
 from time import sleep
 from bs4 import BeautifulSoup
@@ -55,12 +57,12 @@ def CampsiteSearch(campsiteWord):
     elem_search.send_keys(campsiteWord)
     sleep(1)
     elem_search_btn = browser.find_element_by_class_name('basic-button')
+    sleep(1)
     elem_search_btn.click()
     sleep(1)
     
     
     elem_target_atag = browser.find_element_by_css_selector(".campsite-item")
-    sleep(1)
     URL =elem_target_atag.get_attribute("href")
     sleep(1)
     
@@ -68,10 +70,12 @@ def CampsiteSearch(campsiteWord):
 
     browser.quit()
 
-    result = DataMolding(URL)
-    
+    datum_list = DataMolding(URL)
+    datum_json = json.dumps(datum_list, ensure_ascii=False)
         
-    return result
+    return datum_json
+    
 
-
-CampsiteSearch("ふもとっぱら")
+args = sys.argv
+    
+print(CampsiteSearch(args[1]))
